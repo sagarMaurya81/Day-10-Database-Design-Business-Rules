@@ -1,0 +1,168 @@
+--1. Department TABLE
+CREATE TABLE department (
+    department_id SERIAL PRIMARY KEY,
+    department_name VARCHAR(100) UNIQUE NOT NULL,
+    location VARCHAR(100)
+);
+
+--2. EMPLOYEE TABLE 
+CREATE TABLE employee (
+    employee_id SERIAL PRIMARY KEY,
+
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50),
+
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(15) UNIQUE,
+
+    department_id INT NOT NULL,
+    manager_id INT,
+
+    role VARCHAR(20) NOT NULL DEFAULT 'EMPLOYEE',
+
+    joining_date DATE NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+
+    CONSTRAINT fk_employee_department
+        FOREIGN KEY (department_id)
+        REFERENCES department(department_id),
+
+    CONSTRAINT fk_employee_manager
+        FOREIGN KEY (manager_id)
+        REFERENCES employee(employee_id),
+
+    CONSTRAINT chk_employee_role
+        CHECK (role IN ('EMPLOYEE', 'MANAGER', 'HR')),
+
+    CONSTRAINT chk_employee_status
+        CHECK (status IN ('ACTIVE', 'INACTIVE'))
+);
+
+--3. Leave Type
+CREATE TABLE leave_type (
+    leave_type_id SERIAL PRIMARY KEY,
+
+    leave_type_name VARCHAR(50) UNIQUE NOT NULL,
+    description VARCHAR(255),
+
+    max_days INT NOT NULL,
+
+    CONSTRAINT chk_leave_max_days
+        CHECK (max_days > 0)
+);
+
+-- 4. Leave Balance
+CREATE TABLE leave_balance (
+    balance_id SERIAL PRIMARY KEY,
+
+    employee_id INT NOT NULL,
+    leave_type_id INT NOT NULL,
+
+    year INT NOT NULL,
+
+    total_days NUMERIC(5,2) NOT NULL,
+    used_days NUMERIC(5,2) NOT NULL DEFAULT 0,
+    remaining_days NUMERIC(5,2) NOT NULL,
+
+    CONSTRAINT fk_balance_employee
+        FOREIGN KEY (employee_id)
+        REFERENCES employee(employee_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_balance_leave_type
+        FOREIGN KEY (leave_type_id)
+        REFERENCES leave_type(leave_type_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT uq_employee_leave_year
+        UNIQUE (employee_id, leave_type_id, year),
+
+    CONSTRAINT chk_balance_total
+        CHECK (total_days >= 0),
+
+    CONSTRAINT chk_balance_used
+        CHECK (used_days >= 0),
+
+    CONSTRAINT chk_balance_remaining
+        CHECK (remaining_days >= 0)
+);
+
+--5. Leave Request
+CREATE TABLE leave_request (
+    leave_request_id SERIAL PRIMARY KEY,
+
+    employee_id INT NOT NULL,
+    leave_type_id INT NOT NULL,
+
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+
+    total_days NUMERIC(5,2) NOT NULL,
+
+    reason VARCHAR(500),
+
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING_MANAGER',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_request_employee
+        FOREIGN KEY (employee_id)
+        REFERENCES employee(employee_id),
+
+    CONSTRAINT fk_request_leave_type
+        FOREIGN KEY (leave_type_id)
+        REFERENCES leave_type(leave_type_id),
+
+    CONSTRAINT chk_leave_dates
+        CHECK (end_date >= start_date),
+
+    CONSTRAINT chk_leave_total_days
+        CHECK (total_days > 0),
+
+    CONSTRAINT chk_leave_status
+        CHECK (
+            status IN (
+                'PENDING_MANAGER',
+                'PENDING_HR',
+                'APPROVED',
+                'REJECTED',
+                'CANCELLED'
+            )
+        )
+);
+
+--6. Approval History
+CREATE TABLE approval_history (
+    approval_id SERIAL PRIMARY KEY,
+
+    leave_request_id INT NOT NULL,
+    approver_id INT NOT NULL,
+
+    approval_level VARCHAR(20) NOT NULL,
+    action VARCHAR(20) NOT NULL,
+
+    comments VARCHAR(500),
+
+    action_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_approval_request
+        FOREIGN KEY (leave_request_id)
+        REFERENCES leave_request(leave_request_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_approval_employee
+        FOREIGN KEY (approver_id)
+        REFERENCES employee(employee_id),
+
+    CONSTRAINT chk_approval_level
+        CHECK (
+            approval_level IN ('MANAGER', 'HR')
+        ),
+
+    CONSTRAINT chk_approval_action
+        CHECK (
+            action IN ('APPROVED', 'REJECTED')
+        )
+);
+
+

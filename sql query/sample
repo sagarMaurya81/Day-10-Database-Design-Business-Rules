@@ -1,0 +1,199 @@
+-- ============================================
+-- 1. DEPARTMENT DATA
+-- ============================================
+
+INSERT INTO department (department_name, location) VALUES
+('IT', 'Noida'),
+('HR', 'Delhi'),
+('Finance', 'Gurgaon'),
+('Marketing', 'Noida'),
+('Sales', 'Delhi'),
+('Operations', 'Gurgaon');
+
+SELECT * FROM department;
+
+
+-- ============================================
+-- 2. EMPLOYEE DATA
+-- ============================================
+
+INSERT INTO employee
+(first_name, last_name, email, phone, department_id, manager_id, role, joining_date, status)
+VALUES
+('Rahul', 'Sharma', 'rahul.sharma@example.com', '9876500001', 1, NULL, 'MANAGER', '2020-01-15', 'ACTIVE'),
+('Priya', 'Singh', 'priya.singh@example.com', '9876500002', 2, NULL, 'MANAGER', '2019-03-10', 'ACTIVE'),
+('Amit', 'Verma', 'amit.verma@example.com', '9876500003', 3, NULL, 'MANAGER', '2018-07-20', 'ACTIVE'),
+('Neha', 'Gupta', 'neha.gupta@example.com', '9876500004', 4, NULL, 'MANAGER', '2021-02-12', 'ACTIVE'),
+('Vikas', 'Yadav', 'vikas.yadav@example.com', '9876500005', 5, NULL, 'MANAGER', '2020-08-18', 'ACTIVE'),
+('Rohit', 'Kumar', 'rohit.kumar@example.com', '9876500006', 6, NULL, 'MANAGER', '2019-11-25', 'ACTIVE'),
+
+('Sagar', 'Maurya', 'sagar.maurya@example.com', '9876500007', 1, 1, 'EMPLOYEE', '2023-06-15', 'ACTIVE'),
+('Ankit', 'Mishra', 'ankit.mishra@example.com', '9876500008', 1, 1, 'EMPLOYEE', '2022-04-11', 'ACTIVE'),
+('Pooja', 'Sharma', 'pooja.sharma@example.com', '9876500009', 2, 2, 'EMPLOYEE', '2023-01-20', 'ACTIVE'),
+('Karan', 'Singh', 'karan.singh@example.com', '9876500010', 2, 2, 'EMPLOYEE', '2021-09-14', 'ACTIVE'),
+('Riya', 'Gupta', 'riya.gupta@example.com', '9876500011', 3, 3, 'EMPLOYEE', '2022-05-18', 'ACTIVE'),
+('Mohit', 'Verma', 'mohit.verma@example.com', '9876500012', 3, 3, 'EMPLOYEE', '2023-08-01', 'ACTIVE'),
+('Nitin', 'Yadav', 'nitin.yadav@example.com', '9876500013', 4, 4, 'EMPLOYEE', '2022-02-15', 'ACTIVE'),
+('Kavita', 'Jain', 'kavita.jain@example.com', '9876500014', 4, 4, 'EMPLOYEE', '2021-06-22', 'ACTIVE'),
+('Arjun', 'Mehta', 'arjun.mehta@example.com', '9876500015', 5, 5, 'EMPLOYEE', '2023-03-10', 'ACTIVE'),
+('Simran', 'Kaur', 'simran.kaur@example.com', '9876500016', 5, 5, 'EMPLOYEE', '2022-10-05', 'ACTIVE'),
+('Deepak', 'Kumar', 'deepak.kumar@example.com', '9876500017', 6, 6, 'EMPLOYEE', '2021-12-12', 'ACTIVE'),
+('Anjali', 'Verma', 'anjali.verma@example.com', '9876500018', 6, 6, 'EMPLOYEE', '2023-07-17', 'ACTIVE'),
+('Manish', 'Sharma', 'manish.sharma@example.com', '9876500019', 1, 1, 'EMPLOYEE', '2024-01-08', 'ACTIVE'),
+('Swati', 'Gupta', 'swati.gupta@example.com', '9876500020', 2, 2, 'EMPLOYEE', '2024-02-12', 'ACTIVE'),
+('Ravi', 'Kumar', 'ravi.kumar@example.com', '9876500021', 3, 3, 'EMPLOYEE', '2024-03-18', 'ACTIVE'),
+('Shivani', 'Singh', 'shivani.singh@example.com', '9876500022', 4, 4, 'EMPLOYEE', '2024-04-15', 'ACTIVE'),
+('Varun', 'Malhotra', 'varun.malhotra@example.com', '9876500023', 5, 5, 'EMPLOYEE', '2024-05-20', 'ACTIVE'),
+('Ayesha', 'Khan', 'ayesha.khan@example.com', '9876500024', 6, 6, 'EMPLOYEE', '2024-06-10', 'ACTIVE');
+
+SELECT * FROM employee;
+
+
+-- ============================================
+-- 3. LEAVE TYPE DATA
+-- ============================================
+
+INSERT INTO leave_type
+(leave_type_name, description, max_days)
+VALUES
+('CASUAL', 'Casual leave for personal work', 12),
+('SICK', 'Leave for illness or medical reasons', 10),
+('EARNED', 'Annual earned leave', 20),
+('MATERNITY', 'Maternity leave', 180),
+('PATERNITY', 'Paternity leave', 15),
+('UNPAID', 'Leave without salary', 30);
+
+SELECT * FROM leave_type;
+
+-- ============================================
+-- 4. LEAVE BALANCE DATA
+-- ============================================
+
+INSERT INTO leave_balance
+(employee_id, leave_type_id, year, total_days, used_days, remaining_days)
+VALUES
+(1, 1, 2026, 12, 2, 10),
+(1, 2, 2026, 10, 1, 9),
+(1, 3, 2026, 20, 5, 15),
+
+(2, 1, 2026, 12, 3, 9),
+(2, 2, 2026, 10, 2, 8),
+(2, 3, 2026, 20, 4, 16),
+
+(3, 1, 2026, 12, 1, 11),
+(3, 2, 2026, 10, 3, 7),
+(3, 3, 2026, 20, 6, 14),
+
+(4, 1, 2026, 12, 4, 8),
+(4, 2, 2026, 10, 1, 9),
+(4, 3, 2026, 20, 3, 17),
+
+(7, 1, 2026, 12, 2, 10),
+(7, 2, 2026, 10, 1, 9),
+(7, 3, 2026, 20, 5, 15),
+
+(8, 1, 2026, 12, 3, 9),
+(8, 2, 2026, 10, 2, 8),
+(8, 3, 2026, 20, 4, 16);
+
+SELECT * FROM leave_balance;
+
+
+-- ============================================
+-- 5. LEAVE REQUEST DATA
+-- ============================================
+
+INSERT INTO leave_request
+(employee_id, leave_type_id, start_date, end_date, total_days, reason, status)
+VALUES
+(7, 1, '2026-01-10', '2026-01-11', 2,
+ 'Personal work', 'APPROVED'),
+
+(8, 2, '2026-02-05', '2026-02-06', 2,
+ 'Not feeling well', 'APPROVED'),
+
+(9, 1, '2026-02-15', '2026-02-16', 2,
+ 'Family function', 'PENDING_MANAGER'),
+
+(10, 3, '2026-03-01', '2026-03-05', 5,
+ 'Vacation', 'APPROVED'),
+
+(11, 2, '2026-03-10', '2026-03-11', 2,
+ 'Medical checkup', 'PENDING_HR'),
+
+(12, 1, '2026-03-20', '2026-03-21', 2,
+ 'Personal work', 'REJECTED'),
+
+(13, 3, '2026-04-01', '2026-04-05', 5,
+ 'Holiday trip', 'APPROVED'),
+
+(14, 1, '2026-04-10', '2026-04-12', 3,
+ 'Family function', 'PENDING_MANAGER'),
+
+(15, 2, '2026-04-18', '2026-04-19', 2,
+ 'Fever', 'APPROVED'),
+
+(16, 3, '2026-05-01', '2026-05-07', 7,
+ 'Vacation', 'PENDING_HR'),
+
+(17, 1, '2026-05-12', '2026-05-13', 2,
+ 'Personal work', 'APPROVED'),
+
+(18, 2, '2026-05-20', '2026-05-22', 3,
+ 'Health issue', 'REJECTED'),
+
+(19, 1, '2026-06-01', '2026-06-02', 2,
+ 'Personal work', 'APPROVED'),
+
+(20, 3, '2026-06-10', '2026-06-14', 5,
+ 'Vacation', 'PENDING_MANAGER'),
+
+(21, 2, '2026-07-05', '2026-07-06', 2,
+ 'Medical appointment', 'APPROVED'),
+
+(22, 1, '2026-07-15', '2026-07-17', 3,
+ 'Family function', 'CANCELLED'),
+
+(23, 3, '2026-08-01', '2026-08-05', 5,
+ 'Travel', 'APPROVED'),
+
+(24, 1, '2026-08-15', '2026-08-16', 2,
+ 'Personal work', 'PENDING_MANAGER');
+
+ SELECT * FROM leave_request;
+
+
+-- ============================================
+-- 6. APPROVAL HISTORY DATA
+-- ============================================
+
+INSERT INTO approval_history
+(leave_request_id, approver_id, approval_level, action, comments)
+VALUES
+(1, 1, 'MANAGER', 'APPROVED', 'Leave approved by manager'),
+
+(2, 1, 'MANAGER', 'APPROVED', 'Leave approved'),
+
+(4, 2, 'MANAGER', 'APPROVED', 'Vacation approved'),
+
+(5, 3, 'MANAGER', 'APPROVED', 'Approved by department manager'),
+
+(6, 3, 'MANAGER', 'REJECTED', 'Insufficient leave balance'),
+
+(7, 4, 'MANAGER', 'APPROVED', 'Leave approved'),
+
+(9, 5, 'MANAGER', 'APPROVED', 'Sick leave approved'),
+
+(10, 5, 'MANAGER', 'APPROVED', 'Leave approved by manager'),
+
+(11, 6, 'MANAGER', 'APPROVED', 'Leave approved'),
+
+(12, 6, 'MANAGER', 'REJECTED', 'Leave request rejected'),
+
+(13, 1, 'MANAGER', 'APPROVED', 'Leave approved'),
+
+(15, 3, 'MANAGER', 'APPROVED', 'Medical leave approved'),
+
+(17, 5, 'MANAGER', 'APPROVED', 'Leave approved');
+
+SELECT * FROM approval_history;

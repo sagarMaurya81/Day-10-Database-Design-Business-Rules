@@ -1,0 +1,109 @@
+--1.Employee + Department
+SELECT
+    e.employee_id,
+    e.first_name,
+    e.last_name,
+    d.department_name
+FROM employee e
+JOIN department d
+    ON e.department_id = d.department_id;
+
+--2.Employee + Manager ( self join )
+SELECT
+    e.first_name AS employee,
+    m.first_name AS manager
+FROM employee e
+LEFT JOIN employee m
+    ON e.manager_id = m.employee_id;
+
+--3.Employee + Leave Balance + Leave Type
+SELECT
+    e.first_name,
+    e.last_name,
+    lt.leave_type_name,
+    lb.total_days,
+    lb.used_days,
+    lb.remaining_days
+FROM leave_balance lb
+JOIN employee e
+    ON lb.employee_id = e.employee_id
+JOIN leave_type lt
+    ON lb.leave_type_id = lt.leave_type_id;
+
+--4.Leave Request + Employee + Leave Type
+SELECT
+    lr.leave_request_id,
+    e.first_name,
+    e.last_name,
+    lt.leave_type_name,
+    lr.start_date,
+    lr.end_date,
+    lr.total_days,
+    lr.status
+FROM leave_request lr
+JOIN employee e
+    ON lr.employee_id = e.employee_id
+JOIN leave_type lt
+    ON lr.leave_type_id = lt.leave_type_id;
+
+--5.Leave Request + Approval + Approver
+SELECT
+    lr.leave_request_id,
+    e.first_name AS employee,
+    a.first_name AS approver,
+    ah.approval_level,
+    ah.action,
+    ah.comments
+FROM leave_request lr
+JOIN employee e
+    ON lr.employee_id = e.employee_id
+JOIN approval_history ah
+    ON lr.leave_request_id = ah.leave_request_id
+JOIN employee a
+    ON ah.approver_id = a.employee_id;
+
+--6.Complete Leave Report
+SELECT
+    e.first_name AS employee,
+    d.department_name,
+    m.first_name AS manager,
+    lt.leave_type_name,
+    lr.start_date,
+    lr.end_date,
+    lr.total_days,
+    lr.status
+FROM leave_request lr
+JOIN employee e
+    ON lr.employee_id = e.employee_id
+JOIN department d
+    ON e.department_id = d.department_id
+LEFT JOIN employee m
+    ON e.manager_id = m.employee_id
+JOIN leave_type lt
+    ON lr.leave_type_id = lt.leave_type_id;
+
+--7. Pending Manager Approvals
+SELECT
+    lr.leave_request_id,
+    e.first_name AS employee,
+    m.first_name AS manager,
+    lr.start_date,
+    lr.end_date,
+    lr.total_days
+FROM leave_request lr
+JOIN employee e
+    ON lr.employee_id = e.employee_id
+JOIN employee m
+    ON e.manager_id = m.employee_id
+WHERE lr.status = 'PENDING_MANAGER';
+
+-- 8. Department-wise Leave Requests
+SELECT
+    d.department_name,
+    COUNT(lr.leave_request_id) AS total_requests
+FROM department d
+JOIN employee e
+    ON d.department_id = e.department_id
+JOIN leave_request lr
+    ON e.employee_id = lr.employee_id
+GROUP BY d.department_name;
